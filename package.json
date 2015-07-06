@@ -1,0 +1,15 @@
+{
+  "name": "jsx-to-dom",
+  "version": "1.0.0",
+  "description": "Render JSX-IR directly to DOM (e.g. document.createElement(...))",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arthur Stolyar <nekr.fabula@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "jsx-runtime": "^1.0.0"
+  },
+  "repository": "jsx-ir/jsx-to-dom"
+}
