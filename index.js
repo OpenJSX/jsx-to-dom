@@ -13,6 +13,10 @@ var renderer = jsx.register('DOM', {
 
           if (key === 'style') {
             applyStyle(element, props[key]);
+          } else if (key.indexOf('-') !== -1) {
+            // handle dashed props as attributes
+            // need same for namespaces
+            element.setAttribute(key, props[key]);
           } else {
             element[key] = props[key];
           }
