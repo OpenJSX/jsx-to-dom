@@ -9,9 +9,9 @@
 **Note:** Do not forget to install ```jsx-runtime``` before using renderer
 
 ```javascript
-var toHTML = require('jsx-to-html');
+var render = require('jsx-to-html');
 // ...
-var html = toHTML(jsxTree);
+var dom = render(jsxTree);
 
-element.innerHTML = html;
+element.appendChild(dom);
 ```
