@@ -38,9 +38,7 @@ var renderer = jsx.register('DOM', {
   }
 });
 
-module.exports = function(tree) {
-  return renderer.render(tree);
-};
+module.exports = renderer;
 
 function applyStyle(element, style) {
   var elementStyle = element.style;
