@@ -1,6 +1,6 @@
 {
   "name": "jsx-to-dom",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Render JSX-IR directly to DOM (e.g. document.createElement(...))",
   "main": "index.js",
   "scripts": {

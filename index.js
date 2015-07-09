@@ -46,7 +46,7 @@ function applyStyle(element, style) {
   var elementStyle = element.style;
 
   for (var key in style) {
-    if (!hasOwn(style, key)) continue;
+    if (!hasOwn.call(style, key)) continue;
 
     elementStyle[key] = style[key];
   }
