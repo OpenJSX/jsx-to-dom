@@ -1,12 +1,36 @@
 var jsx = require('jsx-runtime');
 var hasOwn = Object.prototype.hasOwnProperty;
 
+var noChildrenTags = require('./no-children-tags').reduce(function(map, tag) {
+  map[tag] = true;
+  return map;
+}, Object.create(null));
+
+var SVG_NS = 'http://www.w3.org/2000/svg';
+var HTML_NS = 'http://www.w3.org/1999/xhtml';
+
 var renderer = jsx.register('DOM', {
+  before: function() {
+    this.scope.namespaces = [];
+  },
   tags: {
     '*': {
       enter: function(tag, props) {
-        // handle namespaces
-        var element = document.createElement(tag);
+        var namespaces = this.scope.namespaces;
+
+        if (tag === 'svg') {
+          namespaces.unshift(SVG_NS);
+        } else if (tag === 'foreignObject') {
+          namespaces.unshift(HTML_NS);
+        }
+
+        var element;
+
+        if (namespaces.length) {
+          element = document.createElementNS(namespaces[0]);
+        } else {
+          element = document.createElement(tag);
+        }
 
         for (var key in props) {
           if (!hasOwn.call(props, key)) continue;
@@ -24,6 +48,16 @@ var renderer = jsx.register('DOM', {
 
         return element;
       },
+      leave: function(parent, tag) {
+        if (
+          tag === 'svg' && this.scope.namespaces[0] === SVG_NS ||
+          tag === 'foreignObject' && this.scope.namespaces[0] === HTML_NS
+        ) {
+          this.scope.namespaces.shift();
+        }
+
+        return parent;
+      },
       child: function(child, parent) {
         if (child instanceof Element) {
           // do nothing
@@ -33,6 +67,13 @@ var renderer = jsx.register('DOM', {
 
         parent.appendChild(child);
         return parent;
+      },
+      children: function(children, parent, tag) {
+        if (typeof noChildrenTags[tag.toLowerCase()] !== 'undefined') {
+          throw new Error('Tag <' + tag + ' /> cannot have children');
+        }
+
+        return children;
       }
     }
   }

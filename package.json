@@ -1,6 +1,6 @@
 {
   "name": "jsx-to-dom",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Render JSX-IR directly to DOM (e.g. document.createElement(...))",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,11 @@
   },
   "author": "Arthur Stolyar <nekr.fabula@gmail.com>",
   "license": "MIT",
-  "peerDependencies": {
-    "jsx-runtime": "^1.0.0"
-  },
-  "repository": "jsx-ir/jsx-to-dom"
+  "repository": "jsx-ir/jsx-to-dom",
+  "dependencies": {
+    "babel-plugin-jsx": "^1.1.0",
+    "html-tags": "^1.1.1",
+    "jsx-runtime": "^1.1.0",
+    "svg-tags": "^1.0.0"
+  }
 }
