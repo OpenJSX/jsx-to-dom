@@ -1,7 +1,7 @@
 var jsx = require('jsx-runtime');
 var hasOwn = Object.prototype.hasOwnProperty;
 
-var noChildrenTags = require('./no-children-tags').reduce(function(map, tag) {
+var emptyTags = require('./lib/empty-tags').reduce(function(map, tag) {
   map[tag] = true;
   return map;
 }, Object.create(null));
@@ -10,8 +10,9 @@ var SVG_NS = 'http://www.w3.org/2000/svg';
 var HTML_NS = 'http://www.w3.org/1999/xhtml';
 
 var renderer = jsx.register('DOM', {
-  before: function() {
+  before: function(element) {
     this.scope.namespaces = [];
+    return element;
   },
   tags: {
     '*': {
@@ -27,7 +28,7 @@ var renderer = jsx.register('DOM', {
         var element;
 
         if (namespaces.length) {
-          element = document.createElementNS(namespaces[0]);
+          element = document.createElementNS(namespaces[0], tag);
         } else {
           element = document.createElement(tag);
         }
@@ -39,7 +40,6 @@ var renderer = jsx.register('DOM', {
             applyStyle(element, props[key]);
           } else if (key.indexOf('-') !== -1) {
             // handle dashed props as attributes
-            // need same for namespaces
             element.setAttribute(key, props[key]);
           } else {
             element[key] = props[key];
@@ -69,7 +69,7 @@ var renderer = jsx.register('DOM', {
         return parent;
       },
       children: function(children, parent, tag) {
-        if (typeof noChildrenTags[tag.toLowerCase()] !== 'undefined') {
+        if (typeof emptyTags[tag.toLowerCase()] !== 'undefined') {
           throw new Error('Tag <' + tag + ' /> cannot have children');
         }
 
