@@ -82,6 +82,11 @@ var renderer = jsx.register('DOM', {
 module.exports = renderer;
 
 function applyStyle(element, style) {
+  if (typeof style === 'string') {
+    element.setAttribute('style', style);
+    return;
+  }
+
   var elementStyle = element.style;
 
   for (var key in style) {

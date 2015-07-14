@@ -67,4 +67,4 @@ export var attr_isnt_prop = () => {
       }
     }
   );
-};
+}

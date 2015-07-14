@@ -1,5 +1,6 @@
 var runtime = require('../_get-runtime.js')();
 var assert = require('assert');
+var emptyTags = require('../../lib/empty-tags');
 
 var SVG_NS = 'http://www.w3.org/2000/svg';
 var HTML_NS = 'http://www.w3.org/1999/xhtml';
@@ -9,62 +10,6 @@ export var div = () => {
 
   assert.equal(
     elem.tagName, 'div'
-  );
-};var runtime = require('../_get-runtime.js')();
-var assert = require('assert');
-
-export var simple = () => {
-  let elem = runtime.render(
-    <div data-test="test"></div>
-  ).__toMock();
-
-  assert.deepEqual(
-    elem, {
-      tag: 'div',
-      attributes: {
-        'data-test': 'test'
-      }
-    }
-  );
-};
-
-export var js_values = () => {
-  let elem = runtime.render(
-    <div
-      data-boolean={ true }
-      data-number={ 1 }
-      data-string={ 'str' }
-      data-object={ {} }
-      data-array={ [1, 2, 3] }
-    ></div>
-  ).__toMock();
-
-  assert.deepEqual(
-    elem, {
-      tag: 'div',
-      attributes: {
-        'data-boolean': 'true',
-        'data-number': '1',
-        'data-string': 'str',
-        'data-object': '[object Object]',
-        'data-array': '1,2,3'
-      }
-    }
-  );
-};
-
-export var prop_isnt_attr = () => {
-  let elem = runtime.render(
-    <div data-test="test" className="test" _prop={ true }></div>
-  ).__toMock();
-
-  assert.deepEqual(
-    elem, {
-      tag: 'div',
-      attributes: {
-        'data-test': 'test'
-      }
-    }
   );
 };
 
@@ -105,3 +50,57 @@ export var html_namespace = () => {
     }]
   });
 };
+
+export var custom_tags = () => {
+  let elem = runtime.render(
+    <div>
+      <custom-tag></custom-tag>
+    </div>
+  ).__toMock();
+
+  assert.deepEqual(elem, {
+    tag: 'div',
+    children: [{
+      tag: 'custom-tag'
+    }]
+  });
+};
+
+export var scope_tags = () => {
+  var Scoped = function() {
+    return <span></span>
+  };
+
+  let elem = runtime.render(
+    <div>
+      <Scoped />
+    </div>
+  ).__toMock();
+
+  assert.deepEqual(elem, {
+    tag: 'div',
+    children: [{
+      tag: 'span'
+    }]
+  });
+};
+
+export var empty_tags = () => {
+  emptyTags.forEach(function(tag, i) {
+    var Empty = function() {
+      return {
+        tag: tag,
+        children: [<div />],
+        props: null
+      }
+    };
+
+    assert.throws(function() {
+      runtime.render(<Empty />);
+    }, function(e) {
+      if (e.message === 'Tag <' + tag + ' /> cannot have children') {
+        return true;
+      }
+    }, 'Tag <' + tag + '> cannot have children, but it has');
+  });
+}
