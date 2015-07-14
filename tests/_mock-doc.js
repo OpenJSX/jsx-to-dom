@@ -1,3 +1,5 @@
+"use strict";
+
 var document = {
   createElement: function(tag) {
     return new Element(tag);

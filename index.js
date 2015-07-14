@@ -1,3 +1,5 @@
+"use strict";
+
 var jsx = require('jsx-runtime');
 var hasOwn = Object.prototype.hasOwnProperty;
 
