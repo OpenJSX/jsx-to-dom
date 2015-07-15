@@ -2,7 +2,7 @@
 
 ### Installation
 
-```npm install jsx-to-html```
+```npm install jsx-to-dom```
 
 ### Usage
 
@@ -10,16 +10,16 @@
 
 ```js
 babel.transform(code, {
-  plugins: ['jsx-to-html/babel-plugin'],
+  plugins: ['jsx-to-dom/babel-plugin'],
   blacklist: ['react']
 });
 ```
-or any other way described [here](http://babeljs.io/docs/advanced/plugins/#usage), just pass `'jsx-to-html/babel-plugin'`` as a plugin name.
+or any other way described [here](http://babeljs.io/docs/advanced/plugins/#usage), just pass `'jsx-to-dom/babel-plugin'`` as a plugin name.
 
 ### Runtime
 
 ```javascript
-import { render } from 'jsx-to-html';
+import { render } from 'jsx-to-dom';
 
 var element = render(<div className="hello">Hello World</div>);
 
