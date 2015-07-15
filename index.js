@@ -93,17 +93,25 @@ function applyProps(element, props) {
 
     var val = props[key];
 
-    if (key === 'style') {
-      applyStyle(element, val);
-    } else if (key.indexOf('-') !== -1) {
-      // handle dashed props as attributes
-      element.setAttribute(key, val);
-    } else if (key === 'class') {
-      element.className = val;
-    } else if (key === 'for') {
-      element.cssFor = val;
-    } else {
-      element[key] = val;
+    switch (key) {
+      case 'style': applyStyle(element, val); break;
+      case 'class': element.className = val; break;
+      case 'for': element.cssFor = val; break;
+
+      case 'innerHTML':
+      case 'outerHTML':
+      case 'textContent':
+      case 'innerText':
+      case 'text':
+        console.warn('Direct manipulation of tags content is not allowed');
+        break;
+      default: {
+        if (key.indexOf('-') !== -1) {
+          element.setAttribute(key, val);
+        } else {
+          element[key] = val;
+        }
+      }
     }
   }
 }

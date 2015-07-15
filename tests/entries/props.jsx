@@ -86,3 +86,39 @@ export var props_transform = () => {
     }
   );
 }
+
+export var content_manipulation = () => {
+  let originalWarn = global.console.warn;
+  global.console.warn = function() {};
+
+  let elem = runtime.render(
+    <div
+      innerHTML="<span></span>"
+      outerHTML="<span></span>"
+      textContent="<span></span>"
+      innerText="<span></span>"
+      text="<span></span>"
+    ></div>
+  ).__toMock([
+    'innerHTML',
+    'outerHTML',
+    'textContent',
+    'innerText',
+    'text'
+  ]);
+
+  global.console.warn = originalWarn;
+
+  assert.deepEqual(
+    elem, {
+      tag: 'div',
+      props: {
+        'innerHTML': void 0,
+        'outerHTML': void 0,
+        'textContent': void 0,
+        'innerText': void 0,
+        'text': void 0,
+      }
+    }
+  );
+}
