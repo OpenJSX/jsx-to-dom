@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jsx-ir/jsx-to-dom.svg?branch=master)](https://travis-ci.org/jsx-ir/jsx-to-dom)
+
 ## DOM Renderer for JSX-IR
 
 ### Installation
