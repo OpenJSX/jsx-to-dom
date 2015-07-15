@@ -25,3 +25,7 @@ var element = render(<div className="hello">Hello World</div>);
 
 container.appendChild(element);
 ```
+
+## License
+
+[MIT](LICENSE.md)
