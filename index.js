@@ -35,18 +35,7 @@ var renderer = jsx.register('DOM', {
           element = document.createElement(tag);
         }
 
-        for (var key in props) {
-          if (!hasOwn.call(props, key)) continue;
-
-          if (key === 'style') {
-            applyStyle(element, props[key]);
-          } else if (key.indexOf('-') !== -1) {
-            // handle dashed props as attributes
-            element.setAttribute(key, props[key]);
-          } else {
-            element[key] = props[key];
-          }
-        }
+        applyProps(element, props);
 
         return element;
       },
@@ -95,5 +84,26 @@ function applyStyle(element, style) {
     if (!hasOwn.call(style, key)) continue;
 
     elementStyle[key] = style[key];
+  }
+}
+
+function applyProps(element, props) {
+  for (var key in props) {
+    if (!hasOwn.call(props, key)) continue;
+
+    var val = props[key];
+
+    if (key === 'style') {
+      applyStyle(element, val);
+    } else if (key.indexOf('-') !== -1) {
+      // handle dashed props as attributes
+      element.setAttribute(key, val);
+    } else if (key === 'class') {
+      element.className = val;
+    } else if (key === 'for') {
+      element.cssFor = val;
+    } else {
+      element[key] = val;
+    }
   }
 }

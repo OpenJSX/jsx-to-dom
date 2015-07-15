@@ -68,3 +68,21 @@ export var attr_isnt_prop = () => {
     }
   );
 }
+
+export var props_transform = () => {
+  let elem = runtime.render(
+    <div class="test" for="thing"></div>
+  ).__toMock(['className', 'cssFor', 'class', 'for']);
+
+  assert.deepEqual(
+    elem, {
+      tag: 'div',
+      props: {
+        className: 'test',
+        cssFor: 'thing',
+        'class': void 0,
+        'for': void 0
+      }
+    }
+  );
+}
