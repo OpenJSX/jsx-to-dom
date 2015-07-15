@@ -1,6 +1,6 @@
 var runtime = require('../_get-runtime.js')();
 var assert = require('assert');
-var emptyTags = require('../../lib/empty-tags');
+var emptyTags = require('empty-tags');
 
 var SVG_NS = 'http://www.w3.org/2000/svg';
 var HTML_NS = 'http://www.w3.org/1999/xhtml';

@@ -11,8 +11,9 @@
   "repository": "jsx-ir/jsx-to-dom",
   "dependencies": {
     "babel-plugin-jsx": "^1.1.0",
-    "jsx-runtime": "^1.1.0",
+    "empty-tags": "^1.0.0",
     "html-tags": "^1.1.1",
+    "jsx-runtime": "^1.1.0",
     "svg-tags": "^1.0.0"
   },
   "devDependencies": {

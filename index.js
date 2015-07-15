@@ -3,7 +3,7 @@
 var jsx = require('jsx-runtime');
 var hasOwn = Object.prototype.hasOwnProperty;
 
-var emptyTags = require('./lib/empty-tags').reduce(function(map, tag) {
+var emptyTags = require('empty-tags').reduce(function(map, tag) {
   map[tag] = true;
   return map;
 }, Object.create(null));
