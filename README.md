@@ -1,4 +1,4 @@
-## HTML Renderer for JSX-IR
+## DOM Renderer for JSX-IR
 
 ### Installation
 
