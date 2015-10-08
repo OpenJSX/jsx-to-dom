@@ -1,6 +1,6 @@
 {
   "name": "jsx-to-dom",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Render JSX-IR directly to DOM (e.g. document.createElement(...))",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,10 @@
     "babel-plugin-jsx": "^1.1.0",
     "empty-tags": "^1.0.0",
     "html-tags": "^1.1.1",
-    "jsx-runtime": "^1.1.0",
     "svg-tags": "^1.0.0"
+  },
+  "peerDependencies": {
+    "jsx-runtime": "^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^5.6.20",

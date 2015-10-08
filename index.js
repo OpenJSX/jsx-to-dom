@@ -12,10 +12,46 @@ var SVG_NS = 'http://www.w3.org/2000/svg';
 var HTML_NS = 'http://www.w3.org/1999/xhtml';
 
 var renderer = jsx.register('DOM', {
+  renderOne: function(target, element, props, children, index) {
+    var result = this.render(element, props, children);
+    var node = target.childNodes[index];
+
+    if (node) {
+      target.insertBefore(result, node.nextSibling);
+    } else {
+      target.appendChild(result);
+    }
+  },
+  /*renderTo: function(target, element) {
+    element = this._render(element);
+
+    if (Array.isArray(element)) {
+      var result = document.createDocumentFragment();
+
+      element.forEach(function(node) {
+        result.appendChild(node);
+      });
+
+      element = result;
+    }
+
+    target.appendChild(element);
+  },*/
+
   before: function(element) {
     this.scope.namespaces = [];
     return element;
   },
+
+  fragment: function() {
+    return document.createDocumentFragment();
+  },
+
+  params: {
+    renderType: 'individual',
+    updateType: 'difference',
+  },
+
   tags: {
     '*': {
       enter: function(tag, props) {
@@ -50,14 +86,45 @@ var renderer = jsx.register('DOM', {
         return parent;
       },
       child: function(child, parent) {
-        if (child instanceof Element) {
-          // do nothing
-        } else {
-          child = document.createTextNode(child + '');
+        if (child instanceof jsx.Stream) {
+          handleStream(child);
+          return child;
         }
 
-        parent.appendChild(child);
-        return parent;
+        parent.appendChild(handleChild(child));
+        return child;
+
+        function handleStream(child) {
+          var lastCount = 0;
+
+          var update = function() {
+            var update = child.get()
+            var index = update[0];
+            var removeCount = update[1];
+            var items = update[2];
+
+            var fragment;
+
+            if (items.length === 1) {
+              fragment = handleChild(items[0]);
+            } else {
+              fragment = document.createDocumentFragment();
+
+              items.forEach(function(item) {
+                fragment.appendChild(handleChild(item));
+              });
+            }
+
+            parent.insertBefore(fragment, parent.childNodes[index + 1]);
+
+            for (var i = index, len = index + removeCount; i < len; i++) {
+              parent.removeChild(parent.childNodes[i]);
+            }
+          }
+
+          child.listen(update);
+          update();
+        }
       },
       children: function(children, parent, tag) {
         if (typeof emptyTags[tag.toLowerCase()] !== 'undefined') {
@@ -113,5 +180,13 @@ function applyProps(element, props) {
         }
       }
     }
+  }
+}
+
+function handleChild(child) {
+  if (child instanceof Element) {
+    return child;
+  } else {
+    return document.createTextNode(child + '');
   }
 }
